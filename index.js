@@ -1,8 +1,11 @@
 var mongo = require('mongoskin')
 var db = mongo.db('mongodb://localhost:27017/server-storage')
 var express = require('express')
+var morgan = require('morgan')
 var app = express()
 var bodyParser = require('body-parser')
+
+app.use(morgan('combined'))
 
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({extended: false})
