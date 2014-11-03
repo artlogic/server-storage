@@ -1,0 +1,28 @@
+{
+  "name": "server-storage",
+  "version": "0.0.1",
+  "description": "A RESTful reimplementation of localStorage using Express and MongoDB.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/artlogic/server-storage.git"
+  },
+  "keywords": [
+    "storage",
+    "rest",
+    "service"
+  ],
+  "author": "James Kruth",
+  "bugs": {
+    "url": "https://github.com/artlogic/server-storage/issues"
+  },
+  "homepage": "https://github.com/artlogic/server-storage",
+  "dependencies": {
+    "body-parser": "^1.9.2",
+    "express": "^4.10.1",
+    "mongoskin": "^1.4.4"
+  }
+}
