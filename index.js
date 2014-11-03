@@ -14,12 +14,12 @@ var urlencodedParser = bodyParser.urlencoded({extended: false})
 // GET /storage?key=<key>  # returns the string associated with <key> or null as JSON
 app.get('/storage', function (req, res) {
     var namespace = req.query.ns
-    if (!namespace) {
+    var key = req.query.key
+    if (!namespace || !key) {
 	res.setStatus(422)
 	return
     }
 
-    var key = req.query.key
     var data = db.collection(namespace)
 
     data.findById(key, function (e, doc) {
@@ -32,13 +32,13 @@ app.get('/storage', function (req, res) {
 // with value="string" or null (could potentially be any valid JSON)
 app.post('/storage', urlencodedParser, function (req, res) {
     var namespace = req.query.ns
-    if (!namespace) {
+    var key = req.query.key
+    var value = JSON.parse(req.body.value)
+    if (!namespace || !key || (typeof value === 'undefined')) {
 	res.setStatus(422)
 	return
     }
 
-    var key = req.query.key
-    var value = JSON.parse(req.body.value)
     var data = db.collection(namespace)
 
     data.findById(key, function (e, doc) {
