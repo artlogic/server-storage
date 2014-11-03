@@ -26,7 +26,7 @@ app.get('/storage', function (req, res) {
     var data = db.collection(namespace)
 
     data.findById(key, function (e, doc) {
-	doc = doc || {value: null}
+	var doc = doc || {value: null}
 	res.json(doc.value)
     })
 })
