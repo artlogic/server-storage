@@ -61,12 +61,18 @@ app.post('/storage', urlencodedParser, function (req, res) {
 // GET /storage/key/<n>  # returns the name of the nth key in the list or null - this will be tricky
 app.get('/storage/key/:n', function (req, res) {
     var namespace = req.query.ns
-     if (!namespace) {
+    var n = req.params.n
+    if (!namespace || (typeof n === 'number')) {
 	res.setStatus(422)
 	return
     }
 
-    res.json('not implemented');
+    var data = db.collection(namespace)
+
+    data.findItems(function (e, docs) {
+	var doc = docs[n] || {_id: null}
+	res.json(doc._id)
+    })
 })
 
 // GET /storage/length  # returns the length of the namespace - an integer
