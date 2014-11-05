@@ -120,6 +120,10 @@ app.delete('/', function (req, res) {
 
 var port = process.env.PORT || 3000
 var host = process.env.HOST || '127.0.0.1'
+var proxy = process.env.PROXY || false
+
+if (proxy) app.enable('trust proxy')
+
 var server = app.listen(port, host, function () {
     var host = server.address().address
     var port = server.address().port
