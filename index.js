@@ -4,10 +4,11 @@ var express = require('express')
 var logging = require('morgan')
 var app = express()
 var bodyParser = require('body-parser')
+var path = require('path')
 
 // middleware
 app.use(logging('combined'))
-app.use(express.static('public'))
+app.use(express.static(path.resolve(__dirname, 'public')))
 
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({extended: false})
