@@ -17,8 +17,8 @@ var urlencodedParser = bodyParser.urlencoded({extended: false})
 // All calls include a namespace variable, for example: ?ns=xzyqHelloWorld
 // The calls WILL fail if a namespace is omitted
 
-// GET /storage?key=<key>  # returns the string associated with <key> or null as JSON
-app.get('/storage', function (req, res) {
+// GET /?key=<key>  # returns the string associated with <key> or null as JSON
+app.get('/', function (req, res) {
     var namespace = req.query.ns
     var key = req.query.key
     if (!namespace || !key) {
@@ -34,9 +34,9 @@ app.get('/storage', function (req, res) {
     })
 })
 
-// POST /storage?key=<key>  # updates the <key> - expects the request body to be x-form-urlencoded data
+// POST /?key=<key>  # updates the <key> - expects the request body to be x-form-urlencoded data
 // with value="string" or null (could potentially be any valid JSON)
-app.post('/storage', urlencodedParser, function (req, res) {
+app.post('/', urlencodedParser, function (req, res) {
     var namespace = req.query.ns
     var key = req.query.key
     var value = JSON.parse(req.body.value)
@@ -61,8 +61,8 @@ app.post('/storage', urlencodedParser, function (req, res) {
     })
 })
 
-// GET /storage/key/<n>  # returns the name of the nth key in the list or null - this will be tricky
-app.get('/storage/key/:n', function (req, res) {
+// GET /key/<n>  # returns the name of the nth key in the list or null - this will be tricky
+app.get('/key/:n', function (req, res) {
     var namespace = req.query.ns
     var n = req.params.n
     if (!namespace || (typeof n === 'number')) {
@@ -78,8 +78,8 @@ app.get('/storage/key/:n', function (req, res) {
     })
 })
 
-// GET /storage/length  # returns the length of the namespace - an integer
-app.get('/storage/length', function (req, res) {
+// GET /length  # returns the length of the namespace - an integer
+app.get('/length', function (req, res) {
     var namespace = req.query.ns
     if (!namespace) {
         res.sendStatus(422)
@@ -93,9 +93,9 @@ app.get('/storage/length', function (req, res) {
     })
 })
 
-// DELETE /storage?key=<key>  # deletes the key (not the same as updating to null, apparently)
-// DELETE /storage  # clears the entire data store
-app.delete('/storage', function (req, res) {
+// DELETE /?key=<key>  # deletes the key (not the same as updating to null, apparently)
+// DELETE /  # clears the entire data store
+app.delete('/', function (req, res) {
     var namespace = req.query.ns
     if (!namespace) {
         res.sendStatus(422)
