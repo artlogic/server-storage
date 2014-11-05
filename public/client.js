@@ -2,7 +2,7 @@ var serverStorage = (function (global, $) {
     "use strict";
 
     // we could potentially sense the base host
-    var base = '//nsbapp.com/storage',
+    var base = '/storage',
         pub = {},
         // find the first part of a path, for example: given '/HelloWorld/index.html
         // return /HelloWorld/ and HelloWorld (first group)
@@ -13,22 +13,38 @@ var serverStorage = (function (global, $) {
 
     // both url and data are optional
     function makeRequest(method, url, data) {
-        if ($.type(url) === 'object') {
+        if ($.type(url) !== 'string') {
             data = url;
             url = '';
         }
 
-        var response, settings = {
-            async: false,
-            cache: false,
-            type: method,
-            'data': data || {},
-            'url': base + url,
-            success: function (data) {
-                response = data;
-            }
-        };
-        settings.data.ns = pub.ns;
+        var response,
+            params = {ns: namespace},
+            settings = {
+                async: false,
+                cache: false,
+                type: method,
+                'url': base + url + '?',
+                success: function (data) {
+                    response = data;
+                }
+            };
+
+        // move key into the querystring, if it's there and out of data
+        if (data && data.key) {
+            params.key = data.key;
+            delete data.key;
+        }
+        params = $.param(params);
+
+        // stringify the value, if needed
+        if (data && data.value) {
+            data.value = JSON.stringify(data.value);
+        }
+
+        // finish configuring settings now that we have data and params
+        settings.data = data;
+        settings.url += params;
 
         // this really shouldn't be synchronous, but we'd have to
         // change the public API otherwise :/
@@ -61,7 +77,7 @@ var serverStorage = (function (global, $) {
     pub.setItem = function (key, value) {
         // we use URL to pass a query string because... maybe the API
         // should be better?
-        return makeRequest('POST', '?key=' + key, {'value': value});
+        return makeRequest('POST', {'key': key, 'value': value});
     };
 
     pub.removeItem = function (key) {
