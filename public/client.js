@@ -56,7 +56,7 @@ var serverStorage = (function (global, $) {
 
     // not part of http://dev.w3.org/html5/webstorage/#storage
     // however, it might be useful to be able to change your namespace
-    pub.ns = namespace;
+    pub.namespace = namespace;
 
     Object.defineProperty(pub, 'length', {get: function () {
         return makeRequest('GET', '/length');
