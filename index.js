@@ -21,15 +21,15 @@ app.get('/storage', function (req, res) {
     var namespace = req.query.ns
     var key = req.query.key
     if (!namespace || !key) {
-	res.setStatus(422)
-	return
+        res.setStatus(422)
+        return
     }
 
     var data = db.collection(namespace)
 
     data.findById(key, function (e, doc) {
-	var doc = doc || {value: null}
-	res.json(doc.value)
+        var doc = doc || {value: null}
+        res.json(doc.value)
     })
 })
 
@@ -40,23 +40,23 @@ app.post('/storage', urlencodedParser, function (req, res) {
     var key = req.query.key
     var value = JSON.parse(req.body.value)
     if (!namespace || !key || (typeof value === 'undefined')) {
-	res.setStatus(422)
-	return
+        res.setStatus(422)
+        return
     }
 
     var data = db.collection(namespace)
 
     data.findById(key, function (e, doc) {
-	if (doc === null) {
-	    // not found
-	    data.insert({_id: key, 'value': value}, function () {
-		res.sendStatus(200)
-	    })
-	} else {
-	    data.updateById(key, {'value': value}, function () {
-		res.sendStatus(200)
-	    })
-	}
+        if (doc === null) {
+            // not found
+            data.insert({_id: key, 'value': value}, function () {
+                res.sendStatus(200)
+            })
+        } else {
+            data.updateById(key, {'value': value}, function () {
+                res.sendStatus(200)
+            })
+        }
     })
 })
 
@@ -65,15 +65,15 @@ app.get('/storage/key/:n', function (req, res) {
     var namespace = req.query.ns
     var n = req.params.n
     if (!namespace || (typeof n === 'number')) {
-	res.setStatus(422)
-	return
+        res.setStatus(422)
+        return
     }
 
     var data = db.collection(namespace)
 
     data.findItems(function (e, docs) {
-	var doc = docs[n] || {_id: null}
-	res.json(doc._id)
+        var doc = docs[n] || {_id: null}
+        res.json(doc._id)
     })
 })
 
@@ -81,14 +81,14 @@ app.get('/storage/key/:n', function (req, res) {
 app.get('/storage/length', function (req, res) {
     var namespace = req.query.ns
     if (!namespace) {
-	res.setStatus(422)
-	return
+        res.setStatus(422)
+        return
     }
 
     var data = db.collection(namespace)
 
     data.count({}, function (e, n) {
-	res.json(n)
+        res.json(n)
     })
 })
 
@@ -97,27 +97,29 @@ app.get('/storage/length', function (req, res) {
 app.delete('/storage', function (req, res) {
     var namespace = req.query.ns
     if (!namespace) {
-	res.setStatus(422)
-	return
+        res.setStatus(422)
+        return
     }
 
     var key = req.query.key
     var data = db.collection(namespace)
 
     if (key) {
-	// delete the key
-	data.removeById(key, function () {
-	    res.sendStatus(200)
-	})
+        // delete the key
+        data.removeById(key, function () {
+            res.sendStatus(200)
+        })
     } else {
-	// clear the store
-	data.drop(function () {
-	    res.sendStatus(200)
-	})
+        // clear the store
+        data.drop(function () {
+            res.sendStatus(200)
+        })
     }
 })
 
-var server = app.listen(3000, function () {
+var port = process.env.PORT || 3000
+var host = process.env.HOST || '127.0.0.1'
+var server = app.listen(port, host, function () {
     var host = server.address().address
     var port = server.address().port
 
