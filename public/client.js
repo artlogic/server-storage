@@ -77,7 +77,7 @@ var serverStorage = (function (global, $) {
     pub.setItem = function (key, value) {
         // we use URL to pass a query string because... maybe the API
         // should be better?
-        return makeRequest('POST', {'key': key, 'value': value});
+        makeRequest('POST', {'key': key, 'value': value});
     };
 
     pub.removeItem = function (key) {
