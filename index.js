@@ -21,7 +21,7 @@ app.get('/storage', function (req, res) {
     var namespace = req.query.ns
     var key = req.query.key
     if (!namespace || !key) {
-        res.setStatus(422)
+        res.sendStatus(422)
         return
     }
 
@@ -40,7 +40,7 @@ app.post('/storage', urlencodedParser, function (req, res) {
     var key = req.query.key
     var value = JSON.parse(req.body.value)
     if (!namespace || !key || (typeof value === 'undefined')) {
-        res.setStatus(422)
+        res.sendStatus(422)
         return
     }
 
@@ -65,7 +65,7 @@ app.get('/storage/key/:n', function (req, res) {
     var namespace = req.query.ns
     var n = req.params.n
     if (!namespace || (typeof n === 'number')) {
-        res.setStatus(422)
+        res.sendStatus(422)
         return
     }
 
@@ -81,7 +81,7 @@ app.get('/storage/key/:n', function (req, res) {
 app.get('/storage/length', function (req, res) {
     var namespace = req.query.ns
     if (!namespace) {
-        res.setStatus(422)
+        res.sendStatus(422)
         return
     }
 
@@ -97,7 +97,7 @@ app.get('/storage/length', function (req, res) {
 app.delete('/storage', function (req, res) {
     var namespace = req.query.ns
     if (!namespace) {
-        res.setStatus(422)
+        res.sendStatus(422)
         return
     }
 
