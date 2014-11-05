@@ -2,7 +2,7 @@ var serverStorage = (function (global, $) {
     "use strict";
 
     // this should not be hard coded... we need a setting of some sort
-    var base = '/api/storage',
+    var base = '/api/storage/',
         pub = {},
         // find the first part of a path, for example: given '/HelloWorld/index.html
         // return /HelloWorld/ and HelloWorld (first group)
