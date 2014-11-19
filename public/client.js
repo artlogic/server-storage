@@ -6,7 +6,8 @@ var serverStorage = (function (global, $) {
         pub = {},
         // find the first part of a path, for example: given '/HelloWorld/index.html
         // return /HelloWorld/ and HelloWorld (first group)
-        ns_re = new RegExp('/([^/]*)/'),
+        // also, given /xnbg/HelloWorld/ return xnbg/HelloWorld (first group)
+        ns_re = new RegExp('/(.*)/'),
         // if there's a problem determining the namespace, set a default one
         ns_raw = ns_re.exec(global.document.location.pathname),
         namespace = ns_raw ? ns_raw[1] : 'default';
