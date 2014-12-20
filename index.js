@@ -14,19 +14,19 @@ app.use(express.static(path.resolve(__dirname, 'public')))
 var urlencodedParser = bodyParser.urlencoded({extended: false})
 
 // None of these calls fail hard (with a 4xx code). All return, soft failing like in the browser.
-// All calls include a namespace variable, for example: ?ns=xzyqHelloWorld
-// The calls WILL fail if a namespace is omitted
+// All calls include a database variable, for example: ?db=xzyqHelloWorld
+// The calls WILL fail if a database is omitted
 
 // GET /?key=<key>  # returns the string associated with <key> or null as JSON
 app.get('/', function (req, res) {
-    var namespace = req.query.ns
+    var database = req.query.db
     var key = req.query.key
-    if (!namespace || !key) {
+    if (!database || !key) {
         res.sendStatus(422)
         return
     }
 
-    var data = db.collection(namespace)
+    var data = db.collection(database)
 
     data.findById(key, function (e, doc) {
         var doc = doc || {value: null}
@@ -37,15 +37,15 @@ app.get('/', function (req, res) {
 // POST /?key=<key>  # updates the <key> - expects the request body to be x-form-urlencoded data
 // with value="string" or null (could potentially be any valid JSON)
 app.post('/', urlencodedParser, function (req, res) {
-    var namespace = req.query.ns
+    var database = req.query.db
     var key = req.query.key
     var value = JSON.parse(req.body.value)
-    if (!namespace || !key || (typeof value === 'undefined')) {
+    if (!database || !key || (typeof value === 'undefined')) {
         res.sendStatus(422)
         return
     }
 
-    var data = db.collection(namespace)
+    var data = db.collection(database)
 
     data.findById(key, function (e, doc) {
         if (doc === null) {
@@ -63,14 +63,14 @@ app.post('/', urlencodedParser, function (req, res) {
 
 // GET /key/<n>  # returns the name of the nth key in the list or null - this will be tricky
 app.get('/key/:n', function (req, res) {
-    var namespace = req.query.ns
+    var database = req.query.db
     var n = req.params.n
-    if (!namespace || (typeof n === 'number')) {
+    if (!database || (typeof n === 'number')) {
         res.sendStatus(422)
         return
     }
 
-    var data = db.collection(namespace)
+    var data = db.collection(database)
 
     data.findItems(function (e, docs) {
         var doc = docs[n] || {_id: null}
@@ -78,15 +78,15 @@ app.get('/key/:n', function (req, res) {
     })
 })
 
-// GET /length  # returns the length of the namespace - an integer
+// GET /length  # returns the length of the database - an integer
 app.get('/length', function (req, res) {
-    var namespace = req.query.ns
-    if (!namespace) {
+    var database = req.query.db
+    if (!database) {
         res.sendStatus(422)
         return
     }
 
-    var data = db.collection(namespace)
+    var data = db.collection(database)
 
     data.count({}, function (e, n) {
         res.json(n)
@@ -96,14 +96,14 @@ app.get('/length', function (req, res) {
 // DELETE /?key=<key>  # deletes the key (not the same as updating to null, apparently)
 // DELETE /  # clears the entire data store
 app.delete('/', function (req, res) {
-    var namespace = req.query.ns
-    if (!namespace) {
+    var database = req.query.db
+    if (!database) {
         res.sendStatus(422)
         return
     }
 
     var key = req.query.key
-    var data = db.collection(namespace)
+    var data = db.collection(database)
 
     if (key) {
         // delete the key
