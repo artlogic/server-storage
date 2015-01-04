@@ -45,7 +45,8 @@ var serverStorage = (function () {
     // the the xhr request has returned a JSON response, parse and
     // return, otherwise return undefined
     function jsonify(xhr) {
-        if (xhr.getResponseHeader('Content-Type').indexOf('application/json') > -1) {
+        var ctype = xhr.getResponseHeader('Content-Type');
+        if (ctype && ctype.indexOf('application/json') > -1) {
             return JSON.parse(xhr.responseText);
         }
     }
