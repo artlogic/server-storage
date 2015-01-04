@@ -121,7 +121,7 @@ var serverStorage = (function () {
 
     // w3's API starts here
     Object.defineProperty(pub, 'length', {get: function () {
-        return makeRequest('GET', {url: '/length'});
+        return pub.getLength();
     }});
 
     pub.clear = function (cb) {
