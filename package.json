@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
@@ -28,5 +28,23 @@
     "mongoskin": "^1.4.4",
     "morgan": "^1.5.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "public/"
+  ],
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "grunt": "^0.4.5",
+    "grunt-jslint": "^1.1.12",
+    "grunt-mocha-phantomjs": "^0.6.0",
+    "mocha": "^2.1.0",
+    "sinon-browser-only": "^1.12.1",
+    "sinon-chai": "^2.6.0"
+  }
 }
